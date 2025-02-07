@@ -1,0 +1,31 @@
+# Poggit CI Manifest
+---
+build-by-default: true
+branches:
+  - main
+projects: []
+
+# Plugin Information
+name: MyWelcomeApp
+description: "A custom plugin that allows players to set and teleport to home locations with many cool features!"
+author: Darren Edwards
+api: 5.0.0
+version: 1.0.1
+main: MyWelcomeApp\Main
+commands:
+  sethome:
+    description: "Set your home location"
+    permission: mywelcomeapp.sethome
+  home:
+    description: "Teleport to your home"
+    permission: mywelcomeapp.home
+permissions:
+  mywelcomeapp.sethome:
+    description: "Allows players to set their home location"
+    default: true
+  mywelcomeapp.home:
+    description: "Allows players to teleport to their home"
+    default: true
+  mywelcomeapp.admin:
+    description: "Allows access to admin settings"
+    default: op

@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types=1);
+
+namespace MyWelcomeApp\commands;
+
+use pocketmine\command\Command;
+use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
+use pocketmine\utils\TextFormat;
+use MyWelcomeApp\Main;
+
+class SetHomeCommand extends Command {
+    private Main $plugin;
+
+    public function __construct(Main $plugin) {
+        parent::__construct("sethome", "Set your home location", "/sethome", []);
+        $this->setPermission("mywelcomeapp.sethome");
+        $this->plugin = $plugin;
+    }
+
+    public function execute(CommandSender $sender, string $label, array $args): bool {
+        if (!$sender instanceof Player) {
+            $sender->sendMessage(TextFormat::RED . "This command can only be used in-game!");
+            return false;
+        }
+
+        if (!$this->testPermission($sender)) {
+            $sender->sendMessage(TextFormat::RED . "You don't have permission to use this command.");
+            return false;
+        }
+
+        // Get player's current location
+        $player = $sender;
+        $position = $player->getPosition();
+        $worldName = $player->getWorld()->getFolderName(); // Get the world name
+        $yaw = $player->getLocation()->getYaw();
+        $pitch = $player->getLocation()->getPitch();
+
+        // Save home location to the homes.yml file
+        $this->plugin->homes->setNested("{$player->getName()}.world", $worldName);
+        $this->plugin->homes->setNested("{$player->getName()}.x", $position->getX());
+        $this->plugin->homes->setNested("{$player->getName()}.y", $position->getY());
+        $this->plugin->homes->setNested("{$player->getName()}.z", $position->getZ());
+        $this->plugin->homes->setNested("{$player->getName()}.yaw", $yaw);
+        $this->plugin->homes->setNested("{$player->getName()}.pitch", $pitch);
+        $this->plugin->homes->save();
+
+        $player->sendMessage(TextFormat::GREEN . "✅ Your home has been set!");
+
+        return true;
+    }
+}

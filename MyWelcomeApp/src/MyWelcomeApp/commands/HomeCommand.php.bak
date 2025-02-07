@@ -1,0 +1,63 @@
+<?php
+
+declare(strict_types=1);
+
+namespace MyWelcomeApp\commands;
+
+use pocketmine\command\Command;
+use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
+use pocketmine\utils\TextFormat;
+use pocketmine\world\Position;
+use MyWelcomeApp\Main;
+
+class HomeCommand extends Command {
+    private Main $plugin;
+
+    public function __construct(Main $plugin) {
+        parent::__construct("home", "Teleport to your home location", "/home", []);
+        $this->setPermission("mywelcomeapp.home");
+        $this->plugin = $plugin;
+    }
+
+    public function execute(CommandSender $sender, string $label, array $args): bool {
+        if (!$sender instanceof Player) {
+            $sender->sendMessage(TextFormat::RED . "This command can only be used in-game!");
+            return false;
+        }
+
+        if (!$this->testPermission($sender)) {
+            $sender->sendMessage(TextFormat::RED . "You don't have permission to use this command.");
+            return false;
+        }
+
+        $player = $sender;
+        $homeData = $this->plugin->homes->get($player->getName());
+
+        if ($homeData === null) {
+            $player->sendMessage(TextFormat::RED . "❌ You have not set a home yet. Use /sethome first.");
+            return false;
+        }
+
+        $worldName = $homeData["world"];
+        $x = (float) $homeData["x"];
+        $y = (float) $homeData["y"];
+        $z = (float) $homeData["z"];
+        $yaw = (float) $homeData["yaw"];
+        $pitch = (float) $homeData["pitch"];
+
+        // Get the world
+        $world = $this->plugin->getServer()->getWorldManager()->getWorldByName($worldName);
+        if ($world === null) {
+            $player->sendMessage(TextFormat::RED . "❌ The world for your home does not exist.");
+            return false;
+        }
+
+        // Create position and teleport player
+        $position = new Position($x, $y, $z, $world);
+        $player->teleport($position);
+        $player->sendMessage(TextFormat::GREEN . "✅ Teleported to your home!");
+
+        return true;
+    }
+}
