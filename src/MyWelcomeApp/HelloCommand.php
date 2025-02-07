@@ -2,39 +2,39 @@
 
 declare(strict_types=1);
 
-namespace MyWelcomeApp;
+namespace MyWelcomeApp\commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use MyWelcomeApp\Main; // Import Main plugin class
 
 class HelloCommand extends Command {
+
     private Main $plugin;
 
     public function __construct(Main $plugin) {
-        parent::__construct("hello", "Say hello!");
-        $this->setPermission("mywelcomeapp.hello"); // ✅ Ensure command has a permission
-        $this->plugin = $plugin;
+        parent::__construct("hello", "Say hello!", "/hello");
+        $this->setPermission("mywelcomeapp.hello");
+        $this->plugin = $plugin; // Assign plugin instance
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
-        if (!$this->testPermission($sender)) {  // ✅ Check if sender has permission
+        if (!$sender instanceof Player) {
+            $sender->sendMessage(TextFormat::RED . "This command can only be used in-game!");
+            return false;
+        }
+
+        if (!$this->testPermission($sender)) {
             $sender->sendMessage(TextFormat::RED . "You don't have permission to use this command.");
             return false;
         }
 
-        if (!$this->plugin->getConfigData()->get("enable-hello-command", true)) {
-            $sender->sendMessage(TextFormat::RED . "This command is disabled!");
-            return false;
-        }
+        // ✅ Example of using $plugin (logging player usage)
+        $this->plugin->getLogger()->info("Player " . $sender->getName() . " used /hello command.");
 
-        if ($sender instanceof Player) {
-            $sender->sendMessage(TextFormat::GREEN . "Hello, " . TextFormat::AQUA . $sender->getName() . TextFormat::GREEN . "! Welcome to the server!");
-        } else {
-            $sender->sendMessage(TextFormat::YELLOW . "Hello from the console!");
-        }
-
+        $sender->sendMessage(TextFormat::GREEN . "Hello, " . $sender->getName() . "! Welcome to the server!");
         return true;
     }
 }
