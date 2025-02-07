@@ -11,7 +11,7 @@ description: "A custom plugin that allows players to set and teleport to home lo
 author: Darren Edwards
 api: 5.24.0
 version: 1.0.1
-main: MyWelcomeApp\Main
+main: MyWelcomeApp\MyWelcomeApp
 commands:
   sethome:
     description: "Set your home location"
