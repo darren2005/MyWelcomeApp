@@ -59,3 +59,9 @@ This plugin is licensed under the MIT License – free to use and modify!
 
 Credits
 Developer: Darren Edwards
+
+[![](https://poggit.pmmp.io/shield.state/MyWelcomeApp)](https://poggit.pmmp.io/p/MyWelcomeApp)
+<a href="https://poggit.pmmp.io/p/MyWelcomeApp"><img src="https://poggit.pmmp.io/shield.state/MyWelcomeApp"></a>
+
+[![](https://poggit.pmmp.io/shield.api/MyWelcomeApp)](https://poggit.pmmp.io/p/MyWelcomeApp)
+<a href="https://poggit.pmmp.io/p/MyWelcomeApp"><img src="https://poggit.pmmp.io/shield.api/MyWelcomeApp"></a>
