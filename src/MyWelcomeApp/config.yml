@@ -1,0 +1,23 @@
+# MyWelcomeApp Config File
+
+# Enable or disable the /hello command
+enable-hello-command: true
+
+# Custom messages
+messages:
+  sethome-success: "✅ Your home has been set!"
+  home-teleport: "✅ Teleporting to your home..."
+  no-home-set: "❌ You haven't set a home yet! Use /sethome first."
+  world-not-found: "❌ The world for your home does not exist!"
+  no-permission: "❌ You don't have permission to use this command!"
+
+# Maximum number of homes a player can set (for future multi-home support)
+max-homes: 1
+
+# Admin settings
+admin:
+  enable-logging: true  # Log home commands in the console
+  allow-teleport-in-combat: false # Prevents using /home during combat
+
+# Fireworks on first-time join (future feature)
+fireworks-on-first-join: true
