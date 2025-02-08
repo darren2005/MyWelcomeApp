@@ -7,6 +7,7 @@ projects: []
 
 # Plugin Information
 name: MyWelcomeApp
+icon: icon.png
 description: "A custom plugin that allows players to set and teleport to home locations with many cool features!"
 author: Darren Edwards
 api: 5.24.0
