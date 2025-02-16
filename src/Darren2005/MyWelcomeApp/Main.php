@@ -12,7 +12,7 @@ use pocketmine\utils\Config;
 use Darren2005\MyWelcomeApp\commands\HelloCommand;
 use Darren2005\MyWelcomeApp\commands\SetHomeCommand;
 use Darren2005\MyWelcomeApp\commands\HomeCommand;
-use Darren2005\MyWelcomeApp\events\EventListener;
+use Darren2005\MyWelcomeApp\EventListener;
 
 class Main extends PluginBase {
 
@@ -27,11 +27,23 @@ class Main extends PluginBase {
         // Ensure data folder exists
         @mkdir($this->getDataFolder());
 
-        // Save default configs
+        // Load or create configs
         $this->saveDefaultConfig();
         $this->configData = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        $this->playerData = new Config($this->getDataFolder() . "PlayerData.yml", Config::YAML);
-        $this->homes = new Config($this->getDataFolder() . "homes.yml", Config::YAML);
+
+        // Load player data file
+        $playerDataFile = $this->getDataFolder() . "PlayerData.yml";
+        if (!file_exists($playerDataFile)) {
+            touch($playerDataFile); // Create empty file if missing
+        }
+        $this->playerData = new Config($playerDataFile, Config::YAML);
+
+        // Load homes data file
+        $homesFile = $this->getDataFolder() . "homes.yml";
+        if (!file_exists($homesFile)) {
+            touch($homesFile);
+        }
+        $this->homes = new Config($homesFile, Config::YAML);
 
         // Register commands
         $this->registerCommands();
@@ -43,10 +55,8 @@ class Main extends PluginBase {
     private function registerCommands(): void {
         $commandMap = $this->getServer()->getCommandMap();
 
-        if ($this->configData->get("enable-hello-command", true)) {
-            if (class_exists(HelloCommand::class)) {
-                $commandMap->register("MyWelcomeApp", new HelloCommand($this));
-            }
+        if ($this->configData->get("enable-hello-command", true) && class_exists(HelloCommand::class)) {
+            $commandMap->register("MyWelcomeApp", new HelloCommand($this));
         }
 
         if (class_exists(SetHomeCommand::class)) {
@@ -75,7 +85,10 @@ class Main extends PluginBase {
         return $this->homes;
     }
 
-    public static function getInstance(): ?Main {
+    public static function getInstance(): Main {
+        if (self::$instance === null) {
+            throw new \RuntimeException("Main plugin instance is not initialized!");
+        }
         return self::$instance;
     }
 }
