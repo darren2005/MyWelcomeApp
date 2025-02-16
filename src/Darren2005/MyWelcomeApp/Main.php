@@ -12,7 +12,7 @@ use pocketmine\utils\Config;
 use Darren2005\MyWelcomeApp\commands\HelloCommand;
 use Darren2005\MyWelcomeApp\commands\SetHomeCommand;
 use Darren2005\MyWelcomeApp\commands\HomeCommand;
-use Darren2005\MyWelcomeApp\events\EventListener;  // Import EventListener class
+use Darren2005\MyWelcomeApp\events\EventListener;
 
 class Main extends PluginBase {
 
@@ -34,7 +34,7 @@ class Main extends PluginBase {
         // Load player data file
         $playerDataFile = $this->getDataFolder() . "PlayerData.yml";
         if (!file_exists($playerDataFile)) {
-            touch($playerDataFile); // Create empty file if missing
+            touch($playerDataFile);
         }
         $this->playerData = new Config($playerDataFile, Config::YAML);
 
@@ -49,14 +49,16 @@ class Main extends PluginBase {
         $this->registerCommands();
 
         // Register event listeners
-        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);  // Ensure this works properly
+        if (class_exists(EventListener::class)) {
+            $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        }
     }
 
     private function registerCommands(): void {
         $commandMap = $this->getServer()->getCommandMap();
 
         if ($this->configData->get("enable-hello-command", true) && class_exists(HelloCommand::class)) {
-            $commandMap->register("MyWelcomeApp", new HelloCommand($this));
+            $commandMap->register("MyWelcomeApp", new HelloCommand());
         }
 
         if (class_exists(SetHomeCommand::class)) {
