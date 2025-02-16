@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Darren2005\MyWelcomeApp;
+namespace Darren2005\MyWelcomeApp\events;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -12,6 +12,7 @@ use pocketmine\network\mcpe\protocol\SetTitlePacket;
 use pocketmine\world\particle\HugeExplodeParticle;
 use pocketmine\math\Vector3;
 use pocketmine\item\VanillaItems;
+use Darren2005\MyWelcomeApp\Main;
 
 class EventListener implements Listener {
     private Main $plugin;
