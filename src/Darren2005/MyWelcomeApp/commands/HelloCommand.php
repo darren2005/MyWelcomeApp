@@ -11,12 +11,12 @@ use pocketmine\utils\TextFormat;
 use Darren2005\MyWelcomeApp\Main;  // Correct namespace for Main class
 
 class HelloCommand extends Command {
-    private Main $plugin;
+    private Main $plugin; // Declare the plugin property
 
     public function __construct(Main $plugin) {
         parent::__construct("hello", "Say hello!", "/hello");
         $this->setPermission("mywelcomeapp.hello"); // Correctly setting permission
-        $this->plugin = $plugin;
+        $this->plugin = $plugin;  // Properly initializing the plugin property
     }
 
     public function execute(CommandSender $sender, string $label, array $args): bool {
