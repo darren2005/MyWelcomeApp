@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MyWelcomeApp\commands;
+namespace Darren2005\MyWelcomeApp\commands; // Correct namespace
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use MyWelcomeApp\Main;
+use Darren2005\MyWelcomeApp\Main; // Correct namespace for Main
 
 class HomeCommand extends Command {
 
@@ -63,7 +63,7 @@ class HomeCommand extends Command {
         $position = new \pocketmine\math\Vector3($x, $y, $z);
         $sender->teleport($position, $yaw, $pitch);
         $sender->sendMessage(TextFormat::GREEN . "Teleported to your home in " . $worldName . "!");
-        
+
         return true;
     }
 }
