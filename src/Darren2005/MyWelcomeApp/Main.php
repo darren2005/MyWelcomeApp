@@ -12,7 +12,7 @@ use pocketmine\utils\Config;
 use Darren2005\MyWelcomeApp\commands\HelloCommand;
 use Darren2005\MyWelcomeApp\commands\SetHomeCommand;
 use Darren2005\MyWelcomeApp\commands\HomeCommand;
-use Darren2005\MyWelcomeApp\EventListener;
+use Darren2005\MyWelcomeApp\events\EventListener;  // Import EventListener class
 
 class Main extends PluginBase {
 
@@ -49,7 +49,7 @@ class Main extends PluginBase {
         $this->registerCommands();
 
         // Register event listeners
-        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);  // Ensure this works properly
     }
 
     private function registerCommands(): void {
