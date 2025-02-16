@@ -11,7 +11,7 @@ use pocketmine\utils\TextFormat;
 use Darren2005\MyWelcomeApp\Main;  // Correct namespace for Main class
 
 class HelloCommand extends Command {
-    private Main $plugin; // Declare the plugin property
+    private Main $plugin;  // Make sure the property is called $plugin
 
     public function __construct(Main $plugin) {
         parent::__construct("hello", "Say hello!", "/hello");
