@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MyWelcomeApp;
+namespace Darren2005\MyWelcomeApp;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
