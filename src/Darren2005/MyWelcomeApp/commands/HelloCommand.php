@@ -12,7 +12,7 @@ use pocketmine\utils\TextFormat;
 class HelloCommand extends Command {
 
     public function __construct() {
-        parent::__construct("hello", "Say hello!", "/hello");
+        parent::__construct("hello", "Say hello to the server!", "/hello");
         $this->setPermission("mywelcomeapp.hello"); 
     }
 
@@ -22,11 +22,11 @@ class HelloCommand extends Command {
             return false;
         }
 
-        if ($sender instanceof Player) {
-            $sender->sendMessage(TextFormat::GREEN . "👋 Hello, " . $sender->getName() . "! Welcome to the server!");
-        } else {
-            $sender->sendMessage(TextFormat::YELLOW . "👋 Hello from the console!");
-        }
+        $message = $sender instanceof Player 
+            ? TextFormat::GREEN . "👋 Hello, " . $sender->getName() . "! Welcome to the server!"
+            : TextFormat::YELLOW . "👋 Hello from the console!";
+
+        $sender->sendMessage($message);
         return true;
     }
 }
