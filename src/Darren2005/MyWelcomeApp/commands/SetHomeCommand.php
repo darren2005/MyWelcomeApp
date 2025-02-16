@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MyWelcomeApp\commands;
+namespace Darren2005\MyWelcomeApp\commands; // Corrected namespace
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use MyWelcomeApp\Main;
+use Darren2005\MyWelcomeApp\Main; // Corrected namespace for Main
 
 class SetHomeCommand extends Command {
     private Main $plugin;
