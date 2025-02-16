@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Darren2005\MyWelcomeApp\events;
+namespace Darren2005\MyWelcomeApp;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -12,7 +12,6 @@ use pocketmine\network\mcpe\protocol\SetTitlePacket;
 use pocketmine\world\particle\HugeExplodeParticle;
 use pocketmine\math\Vector3;
 use pocketmine\item\VanillaItems;
-use Darren2005\MyWelcomeApp\Main;
 
 class EventListener implements Listener {
     private Main $plugin;
@@ -36,16 +35,15 @@ class EventListener implements Listener {
         }
 
         // ✅ Custom join messages
+        $welcomeMessage = $config->get("welcome-message", "Welcome to the server, {player}!");
         if ($config->get("enable-welcome", true)) {
-            $message = str_replace("{player}", $player->getName(), $config->get("welcome-message"));
-            $player->sendMessage($message);
+            $message = str_replace("{player}", $player->getName(), $welcomeMessage);
+            $player->sendMessage(TextFormat::AQUA . $message);
         }
 
         // ✅ Custom title messages
         if ($config->get("enable-title-message", true)) {
-            $pk = new SetTitlePacket();
-            $pk->type = SetTitlePacket::TYPE_SET_TITLE;
-            $pk->text = "Welcome, " . $player->getName() . "!";
+            $pk = SetTitlePacket::create(SetTitlePacket::TYPE_SET_TITLE, "Welcome, " . $player->getName() . "!");
             $player->getNetworkSession()->sendDataPacket($pk);
         }
 
@@ -58,7 +56,7 @@ class EventListener implements Listener {
         $messages = $config->get("welcome-messages", []);
         if (!empty($messages)) {
             $randomMessage = str_replace("{player}", $player->getName(), $messages[array_rand($messages)]);
-            $player->sendMessage($randomMessage);
+            $player->sendMessage(TextFormat::LIGHT_PURPLE . $randomMessage);
         }
 
         // ✅ Fireworks on join (Corrected version)
@@ -74,7 +72,8 @@ class EventListener implements Listener {
         $player = $event->getPlayer();
 
         // ✅ Custom leave message
-        $leaveMessage = str_replace("{player}", $player->getName(), $config->get("custom-leave-message"));
-        $event->setQuitMessage($leaveMessage);
+        $leaveMessage = $config->get("custom-leave-message", "{player} has left the server.");
+        $formattedLeaveMessage = str_replace("{player}", $player->getName(), $leaveMessage);
+        $event->setQuitMessage(TextFormat::RED . $formattedLeaveMessage);
     }
 }
